@@ -1,0 +1,16 @@
+.btnContainer {
+  text-align: center;
+}
+
+.btn {
+  font-weight: 500;
+  background-color: #3e5cb6;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin-top: 32px;
+}
+
+.btn:hover {
+  background-color: #6c8cff;
+}
