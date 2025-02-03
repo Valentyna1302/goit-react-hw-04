@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 // import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import SearchBar from "./components/SearchBar/SearchBar";
@@ -12,20 +12,31 @@ function App() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [query, setQuery] = useState("");
   // const [page, setPage] = useState(1);
 
-  const handleSearch = async (topic, page) => {
-    try {
-      setImages([]);
-      setError(false);
-      setLoading(true);
-      const data = await fetchImagesWithTopic(topic, page);
-      setImages(data);
-    } catch {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    if (!query) return;
+
+    const getData = async () => {
+      try {
+        setImages([]);
+        setError(false);
+        setLoading(true);
+        const data = await fetchImagesWithTopic(query);
+        setImages(data);
+      } catch {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getData();
+  }, [query]);
+
+  const handleSearch = (newQuery) => {
+    if (query === newQuery) return;
+    setQuery(newQuery);
   };
 
   return (
@@ -36,7 +47,7 @@ function App() {
       {error && <ErrorMessage />}
       <ImageModal />
       {/* <LoadMoreBtn setPage={setPage} /> */}
-      <button onClick={() => setPage((prev) => prev + 1)}>Load more</button>
+      {/* <button onClick={() => setPage((prev) => prev + 1)}>Load more</button> */}
     </>
   );
 }
